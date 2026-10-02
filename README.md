@@ -4,21 +4,9 @@ A gate-level digital logic design of an **8-floor hotel lift controller**, built
 
 > Group project for **SMJE1113 Digital Electronics**, Bachelor in Artificial Intelligence, Universiti Teknologi Malaysia (Semester 2, 2025/2026).
 
-▶️ **Demo video:** https://youtu.be/7mtNhtzHTdw
-
-<p align="center">
-  <img src="assets/full_circuit.png" alt="Full lift controller circuit in DEEDS: password and card decoders, door control, master enable, and the 3-bit counter" width="780">
-</p>
-
----
-
 ## How it works
 
 A hotel guest enters a password, taps a room card, selects a floor, closes the door and presses UP or DOWN. The lift counts floor by floor until it reaches the selected floor. Then it stops by itself, opens the door and sounds the alarm.
-
-<p align="center">
-  <img src="assets/block_diagram.png" alt="Block diagram: user inputs, password check, card verification, door control, master enable, clock enabler, counter, comparator, stop/open/alarm/display" width="560">
-</p>
 
 The lift only moves when **all four** of these conditions are true at once:
 
@@ -35,10 +23,6 @@ Master_Enable = ENABLE · Password_OK · Card_OK · Door_Closed
 - Three positive-edge-triggered **D flip-flops**, with outputs `Q2 Q1 Q0` for floors `000` to `111` (0–7).
 - Direction input `U`: `1` counts up, `0` counts down.
 - **Saturating:** it holds at floor 7 when told to go up and at floor 0 when told to go down. It never wraps around.
-
-<p align="center">
-  <img src="assets/state_diagram.png" alt="State diagram with 8 states, U=1 counts up, U=0 counts down, hold at 111 and 000" width="360">
-</p>
 
 Next-state logic, worked out from the state table → Karnaugh maps → minimised sum-of-products:
 
@@ -62,8 +46,6 @@ Real lift buttons are pressed once, not held down. A D flip-flop is used as a la
 - UP sets `Q = 1` and DOWN clears `Q = 0` immediately, without waiting for a clock edge.
 - With no button pressed, the flip-flop holds the direction for the whole trip.
 - `D` is tied to 0 and `Ck` to 1, so the synchronous path is disabled.
-
-<p align="center"><img src="assets/direction_control.png" alt="Direction control D flip-flop latch using PR' and CL'" width="520"></p>
 
 ### 4. Access control: password and room card
 
@@ -96,7 +78,6 @@ EMERGENCY stops the clock instead of driving `CLR`/`PRE`, so the lift **freezes 
 
 ### 7. Status indicators and display
 
-<p align="center"><img src="assets/status_indicators.png" alt="Status indicators: access granted/denied, door open/closed, arrived, alarm, lift moving, and 7-segment displays" width="620"></p>
 
 | Indicator | Logic |
 |---|---|
@@ -130,22 +111,8 @@ EMERGENCY stops the clock instead of driving `CLR`/`PRE`, so the lift **freezes 
 ## Project structure
 
 ```
-├── circuit/
-│   └── lift_controller.pbs     # DEEDS d-DcS circuit file
-├── docs/
-│   └── presentation.pdf        # project slides
-└── assets/                     # diagrams and circuit screenshots used in this README
+├── lift_controller.pbs     # DEEDS d-DcS circuit file
 ```
-
-## My contribution
-
-I designed and implemented the **direction control latch**, **password authentication**, **hotel card verification**, **door control** and **master enable logic**: the access and safety layer that decides when the lift is allowed to move. I also wrote the system requirements.
-
-## Team
-
-Mun Weng Yann · Nik Muhammad Faris bin Nik Zaki · Bong Xin Ting · **Jessie Moh Ngiik Jun**
-
-Lecturer: Ts. Dr. Sahnius binti Usman, Section EB10
 
 ## Possible improvements
 
@@ -153,8 +120,3 @@ Lecturer: Ts. Dr. Sahnius binti Usman, Section EB10
 - Queue of multiple floor requests (memory)
 - Overload detection
 - A real buzzer output and a richer display
-
-## References
-
-- *Digital Electronics Deeds*. https://www.digitalelectronicsdeeds.com/
-- Rahman, M. et al. (2017). *A Simulation Study of an Elevator Control System using Digital Logic.* International Journal of Engineering Trends and Technology, 52(3).
